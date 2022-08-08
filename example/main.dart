@@ -1,7 +1,6 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/hatem/projects/hash_at_links_detector/lib/src/hash_at_links_detector.dart';
+import 'package:hash_at_links_detector/hash_at_links_detector.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +36,7 @@ class _MyAppState extends State<MyApp> {
                       print("tag is  $tag");
                     }
                   },
-                  onOpen: (open) {
+                  onUrlClicked: (open) {
                     // launch  url
                     print("opened $open");
                   },

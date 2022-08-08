@@ -1,7 +1,7 @@
-
 import 'package:flutter/gestures.dart';
 import 'regular_expression.dart';
 import 'package:flutter/material.dart';
+
 abstract class CustomSmartTextElement {}
 
 ///Represents an element containing a link
@@ -65,17 +65,22 @@ List<CustomSmartTextElement> _smartify(
     final words = sentence.split(' ');
     words.forEach((word) {
       if (_linkRegex.hasMatch(word)) {
-
-        link ? span.add(TextElement(word+" ")): span.add(LinkElement(word+" ")) ;
+        link
+            ? span.add(TextElement(word + " "))
+            : span.add(LinkElement(word + " "));
         // print("link is " + word);
       } else if (hashTagRegExp.hasMatch(word)) {
-        hashTag? span.add(TextElement(word+" ")) : span.add(HashTagElement(word+" "));
+        hashTag
+            ? span.add(TextElement(word + " "))
+            : span.add(HashTagElement(word + " "));
         //print("tag is " + word);
       } else if (hashTagAtSignRegExp.hasMatch(word)) {
-        at?  span.add(TextElement(word+" ")) : span.add(AtElement(word+" "));
+        at
+            ? span.add(TextElement(word + " "))
+            : span.add(AtElement(word + " "));
         //print("At is " + word);
       } else {
-        span.add(TextElement(word+" "));
+        span.add(TextElement(word + " "));
         //  print("text is " + word);
       }
     });
@@ -99,19 +104,19 @@ class CustomSmartText extends StatelessWidget {
   final String text;
 
   /// Style for non-link text
-  final TextStyle style;
+  final TextStyle? style;
 
   /// Style of link text
-  final TextStyle linkStyle;
+  final TextStyle? linkStyle;
 
   /// Style of HashTag text
-  final TextStyle tagStyle;
+  final TextStyle? tagStyle;
 
   /// Style of At text
-  final TextStyle atStyle;
+  final TextStyle? atStyle;
 
   /// Callback for tapping a link
-  final StringCallback onOpen;
+  final StringCallback onUrlClicked;
 
   /// Callback for tapping a tag
   final StringCallback onTagClick;
@@ -124,15 +129,15 @@ class CustomSmartText extends StatelessWidget {
   final bool disableHashTag;
 
   const CustomSmartText({
-    Key key,
-    this.text,
+    Key? key,
+    required this.text,
     this.style,
     this.linkStyle,
     this.tagStyle,
     this.atStyle,
-    this.onOpen,
-    this.onAtClick,
-    this.onTagClick,
+    required this.onUrlClicked,
+    required this.onAtClick,
+    required this.onTagClick,
     this.disableLinks = false,
     this.disableAt = false,
     this.disableHashTag = false,
@@ -140,14 +145,14 @@ class CustomSmartText extends StatelessWidget {
 
   /// Raw TextSpan builder for more control on the RichText
   TextSpan _buildTextSpan({
-    String text,
-    TextStyle style,
-    TextStyle linkStyle,
-    TextStyle tagStyle,
-    TextStyle atStyle,
-    StringCallback onOpen,
-    StringCallback onTagClick,
-    StringCallback onAtClick,
+    required String text,
+    TextStyle style = const TextStyle(color: Colors.blue),
+    TextStyle linkStyle = const TextStyle(color: Colors.blue),
+    TextStyle tagStyle = const TextStyle(color: Colors.blue),
+    TextStyle atStyle = const TextStyle(color: Colors.blue),
+    StringCallback? onOpen,
+    StringCallback? onTagClick,
+    StringCallback? onAtClick,
   }) {
     void _onOpen(String url) {
       if (onOpen != null) {
@@ -171,32 +176,36 @@ class CustomSmartText extends StatelessWidget {
 
     return TextSpan(
         children: elements.map<TextSpan>((element) {
-          if (element is TextElement) {
-            return TextSpan(
-              text: element.text,
-              style: style,
-            );
-          } else if (element is LinkElement) {
-            return LinkTextSpan(
-              text: element.url,
-              style: linkStyle,
-              onPressed: () => _onOpen(element.url),
-            );
-          } else if (element is HashTagElement) {
-            return LinkTextSpan(
-              text: element.tag,
-              style: tagStyle,
-              onPressed: () => _onTagClick(element.tag),
-            );
-          } else if (element is AtElement) {
-            return LinkTextSpan(
-              text: element.at,
-              style: atStyle,
-              onPressed: () => _onAtClick(element.at),
-            );
-          }
-          return null;
-        }).toList());
+      if (element is TextElement) {
+        return TextSpan(
+          text: element.text,
+          style: style,
+        );
+      } else if (element is LinkElement) {
+        return LinkTextSpan(
+          text: element.url,
+          style: linkStyle,
+          onPressed: () => _onOpen(element.url),
+        );
+      } else if (element is HashTagElement) {
+        return LinkTextSpan(
+          text: element.tag,
+          style: tagStyle,
+          onPressed: () => _onTagClick(element.tag),
+        );
+      } else if (element is AtElement) {
+        return LinkTextSpan(
+          text: element.at,
+          style: atStyle,
+          onPressed: () => _onAtClick(element.at),
+        );
+      }
+      final e = element as TextElement;
+      return TextSpan(
+        text: e.text,
+        style: style,
+      );
+    }).toList());
   }
 
   @override
@@ -209,36 +218,37 @@ class CustomSmartText extends StatelessWidget {
           textAlign: TextAlign.start,
           softWrap: true,
           text: _buildTextSpan(
-              text: text,
-              style: Theme.of(context).textTheme.bodyText2.merge(style),
-              linkStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .merge(style)
-                  .copyWith(
-                color: Colors.blueAccent,
-                decoration: TextDecoration.underline,
-              )
-                  .merge(linkStyle),
-              tagStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .merge(style)
-                  .copyWith(
-                color: Colors.blueAccent,
-              )
-                  .merge(tagStyle),
-              atStyle: Theme.of(context)
-                  .textTheme
-                  .bodyText2
-                  .merge(style)
-                  .copyWith(
-                color: Colors.blueAccent,
-              )
-                  .merge(atStyle),
-              onOpen: onOpen,
-              onTagClick: onTagClick,
-              onAtClick: onAtClick),
+            text: text,
+            style: Theme.of(context).textTheme.bodyText2!.merge(style),
+            linkStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .merge(style)
+                .copyWith(
+                  color: Colors.blueAccent,
+                  decoration: TextDecoration.underline,
+                )
+                .merge(linkStyle),
+            tagStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .merge(style)
+                .copyWith(
+                  color: Colors.blueAccent,
+                )
+                .merge(tagStyle),
+            atStyle: Theme.of(context)
+                .textTheme
+                .bodyText2!
+                .merge(style)
+                .copyWith(
+                  color: Colors.blueAccent,
+                )
+                .merge(atStyle),
+            onOpen: onUrlClicked,
+            onTagClick: onTagClick,
+            onAtClick: onAtClick,
+          ),
         ),
       ],
     );
@@ -246,10 +256,13 @@ class CustomSmartText extends StatelessWidget {
 }
 
 class LinkTextSpan extends TextSpan {
-  LinkTextSpan({TextStyle style, VoidCallback onPressed, String text})
+  LinkTextSpan(
+      {required TextStyle style,
+      required VoidCallback onPressed,
+      required String text})
       : super(
-    style: style,
-    text: text,
-    recognizer: new TapGestureRecognizer()..onTap = onPressed,
-  );
+          style: style,
+          text: text,
+          recognizer: new TapGestureRecognizer()..onTap = onPressed,
+        );
 }

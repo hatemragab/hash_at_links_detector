@@ -1,11 +1,11 @@
 name: hash_at_links_detector
 description: A new Flutter package. custom text to detect '#'_'@'_'links' support may languages
-version: 0.0.1
+version: 0.0.2
 
 homepage: https://github.com/hatemragab/hast_at_detector
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=1.17.0 <2.0.0"
 
 dependencies:
