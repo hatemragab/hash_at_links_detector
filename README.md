@@ -1,7 +1,7 @@
 # hash_at_links_detector
 
 
-<img src ="https://i.ibb.co/ZfVz2NF/example.png" width = "265"/>
+<img src ="https://user-images.githubusercontent.com/37384769/184183782-3460b254-2cef-4404-8393-59b65fd8c9fc.png" width = "265"/>
 
 You can use `CustomSmartText` to detect # @ links  text.
 ```dart
@@ -17,7 +17,7 @@ You can use `CustomSmartText` to detect # @ links  text.
                       print("tag is  $tag");
                     }
                   },
-                  onOpen: (open) {
+                   onUrlClicked: (open) {
                     // launch  url
                     print("opened $open");
                   },
