@@ -113,6 +113,7 @@ class CustomSmartText extends StatelessWidget {
 
   /// Callback for tapping a tag
   final StringCallback? onTagClick;
+  final int? maxLines;
 
   /// Callback for tapping a at
   final StringCallback? onAtClick;
@@ -128,6 +129,7 @@ class CustomSmartText extends StatelessWidget {
     this.linkStyle,
     this.tagStyle,
     this.atStyle,
+    this.maxLines,
     this.onUrlClicked,
     this.onAtClick,
     this.onTagClick,
@@ -169,6 +171,7 @@ class CustomSmartText extends StatelessWidget {
         _smartify(text, !disableLinks, !disableHashTag, !disableAt);
 
     return TextSpan(
+
       children: elements.map<TextSpan>((element) {
         if (element is TextElement) {
           return TextSpan(
@@ -206,6 +209,7 @@ class CustomSmartText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RichText(
+      maxLines: maxLines,
       softWrap: true,
       text: _buildTextSpan(
         text: text,
