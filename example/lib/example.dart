@@ -17,8 +17,14 @@ class Example extends StatelessWidget {
             children: [
               const Divider(),
               CustomSmartText(
-                text:
-                    "2test @2test1 header #rtest_hash https://www.google.com @حاتم",
+                text: '''import '';
+@hatem 
+#test
+google.com
+main() {
+  // prints 'arvizturo tukorfurogep'
+  print(removeDiacritics('árvíztűrő tükörfúrógép'));
+}''',
                 disableHashTag: true,
                 style: const TextStyle(fontSize: 17),
                 onTagClick: (tag) {
@@ -32,7 +38,6 @@ class Example extends StatelessWidget {
                   // await launchUrl(Uri.parse(url));
                 },
               ),
-              const Divider(),
               const CustomSmartText(
                 text: "test test test @stop_at #stop_hash",
                 disableHashTag: true,

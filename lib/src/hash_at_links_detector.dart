@@ -65,9 +65,10 @@ List<CustomSmartTextElement> _smartify(
 ) {
   final List<CustomSmartTextElement> span = [];
   final lines = text.split('\n');
-  lines.forEach((sentence) {
-    final words = sentence.split(' ');
-    words.forEach((word) {
+
+  for (int i = 0; i < lines.length; i++) {
+    final words = lines[i].split(' ');
+    for (final word in words) {
       if (link && _linkRegex.hasMatch(word)) {
         span.add(LinkElement(word + " "));
       } else if (hashTag && hashTagRegExp.hasMatch(word)) {
@@ -77,14 +78,11 @@ List<CustomSmartTextElement> _smartify(
       } else {
         span.add(TextElement(word + " "));
       }
-    });
-
-    /// this is the end of the line
-    //span.add(TextElement('\n'));
-  });
-  // if (sentences.isNotEmpty) {
-  //   span.removeLast();
-  // }
+    }
+    if (i != lines.length - 1) {
+      span.add(TextElement('\n'));
+    }
+  }
   return span;
 }
 
@@ -171,7 +169,6 @@ class CustomSmartText extends StatelessWidget {
         _smartify(text, !disableLinks, !disableHashTag, !disableAt);
 
     return TextSpan(
-
       children: elements.map<TextSpan>((element) {
         if (element is TextElement) {
           return TextSpan(

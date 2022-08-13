@@ -1,6 +1,6 @@
 name: hash_at_links_detector
 description: hash at links detector Custom text to detect '#'_'@'_'links' support many languages
-version: 1.0.0
+version: 1.0.1
 
 homepage: https://github.com/hatemragab/hash_at_links_detector
 issue_tracker: https://github.com/hatemragab/hash_at_links_detector/issues
